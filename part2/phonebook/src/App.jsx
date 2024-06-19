@@ -11,7 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhoneNumber, setNewPhoneNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [notification, setNotification] = useState({ 
+  const [notification, setNotification] = useState({
     message: '', isError: false, show: false
   })
 
@@ -22,45 +22,45 @@ const App = () => {
   }, [])
 
   const handleNotification = (message, isError) => {
-    setNotification({message, isError, show: true})
+    setNotification({ message, isError, show: true })
   }
 
   const addPerson = (e) => {
     e.preventDefault()
 
-    const exists = persons.find(({name}) => name === newName)
+    const exists = persons.find(({ name }) => name === newName)
 
-    if(exists) {
+    if (exists) {
       const confirmReplace = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
 
-      if(confirmReplace) {
+      if (confirmReplace) {
         const res = update({ ...exists, number: newPhoneNumber })
-          .then((data) => 
+          .then((data) =>
             setPersons((prev) => {
-                const copy = [...prev]
-                const index = copy.findIndex((el) => el.id === exists.id)
-                copy[index] = data
-                return [...copy]
-              }),
+              const copy = [...prev]
+              const index = copy.findIndex((el) => el.id === exists.id)
+              copy[index] = data
+              return [...copy]
+            })
           )
           .catch(() => {
             handleNotification('An error has occurred when trying to update the phonebook information, try again.', true)
             return false
           })
-        if(res === false) return
+        if (res === false) return
       }
     } else {
       const res = create({ name: newName, number: newPhoneNumber })
-        .then((data) => 
+        .then((data) =>
           setPersons((prev) => [...prev, { ...data }]
-        ))
+          ))
         .catch(() => {
-            handleNotification('An error has occurred when trying to create the phonebook information, try again.', true)
-            return false
+          handleNotification('An error has occurred when trying to create the phonebook information, try again.', true)
+          return false
         })
-      if(res === false) return
+      if (res === false) return
     }
-    
+
     handleNotification(`Added ${newName}`, false)
     setNewName('')
     setNewPhoneNumber('')
@@ -68,24 +68,24 @@ const App = () => {
 
   const deletePerson = (name, id) => {
     const confirmDeletion = window.confirm(`Delete ${name} ?`)
-    if(confirmDeletion) {
+    if (confirmDeletion) {
       deleteEntry(id)
-      .then((status) => {
-        if(status >= 200 || status <= 299) {
-          handleNotification(`Phonebook of ${name} deleted successfully`, false)
-        }
-      })
-      .catch(() => 
-        handleNotification(`Information of ${name} has already been removed from the server`, true)
-      )
+        .then((status) => {
+          if (status >= 200 || status <= 299) {
+            handleNotification(`Phonebook of ${name} deleted successfully`, false)
+          }
+        })
+        .catch(() =>
+          handleNotification(`Information of ${name} has already been removed from the server`, true)
+        )
       setPersons((prev) => {
         return prev.filter((el) => el.id !== id)
       })
     }
   }
 
-  const filteredPersons = !filter 
-    ? persons 
+  const filteredPersons = !filter
+    ? persons
     : persons.filter(({ name }) => (name.toLowerCase().includes(filter)))
 
   return (
@@ -95,13 +95,13 @@ const App = () => {
         notification={notification}
         setNotification={setNotification}
       />
-      <Filter 
+      <Filter
         filter={filter}
         handleFilter={(e) => setFilter(e.target.value.toLowerCase())}
       />
       <br />
       <h3>Add a new person</h3>
-      <PersonForm 
+      <PersonForm
         addPerson={addPerson}
         name={newName}
         handleName={(e) => setNewName(e.target.value)}
@@ -115,8 +115,3 @@ const App = () => {
 }
 
 export default App
-
-      
-
-
-
