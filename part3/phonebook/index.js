@@ -2,7 +2,7 @@ import express, { json } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 
-const BASE_URL = 'http://localhost:3001/api/persons'
+const BASE_URL = '/api/persons'
 
 const app = express()
 app.use(express.static('dist'))
