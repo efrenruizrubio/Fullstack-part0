@@ -5,6 +5,7 @@ import morgan from 'morgan'
 const BASE_URL = '/api/persons'
 
 const app = express()
+app.use(express.static('dist'))
 app.use(cors())
 app.use(json())
 app.use(
