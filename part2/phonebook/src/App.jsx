@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/filter'
 import PersonForm from './components/person-form'
 import Persons from './components/persons'
-import { getAll, create, update, deleteEntry } from '../services/persons'
+import { getAll, create, update, deleteEntry } from './services/persons'
 import Notification from './components/notification'
 
 const App = () => {
